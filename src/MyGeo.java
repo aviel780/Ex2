@@ -8,7 +8,7 @@ public class MyGeo implements GeoLocation {
     public MyGeo(double x , double y, double z ){
         this.x = x;
         this.y = y;
-        this.z = z;
+        this.z = 0;
     }
     public MyGeo(double x , double y ){// the permetr z is 0 in all the cases
         this.x = x;
@@ -29,6 +29,7 @@ public class MyGeo implements GeoLocation {
     public double z() {
         return this.z;
     }
+
     public void setx(double a){
     this.x =a;
     }

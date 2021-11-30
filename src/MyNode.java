@@ -56,8 +56,7 @@ public class MyNode implements NodeData{
 
     @Override
     public void setLocation(GeoLocation p) {
-    MyGeo n = new MyGeo(p.x(),p.y(),p.z());
-    this.location = n;
+        this.location = new MyGeo(p.x(),p.y(),p.z());
     }
 
     @Override
