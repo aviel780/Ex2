@@ -8,70 +8,96 @@ import java.util.Map;
 
 public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     private int MC = 0;
-    private Map<Integer, NodeData> nodes;
-    private Map<Integer, EdgeData> edges;
+    private Map<Integer,MyNode> nodes;
+    private Map<Integer,Map<Integer, MyEdge>> edegs;
 
-    public MyDirectedWeightedGraph(DirectedWeightedGraph g){
-        nodes = new HashMap<>();
-        edges = new HashMap<>();
-        Iterator<NodeData> Node = g.nodeIter();
-        while(Node.hasNext()) {
-            NodeData currNode = Node.next();
-            nodes.put(currNode.getKey(), new MyNode((MyNode) currNode));
-        }
-        Iterator<EdgeData> edge = g.edgeIter();
-        while(edge.hasNext()) {
-            EdgeData curredge = edge.next();
-            MyEdge newEdge = new MyEdge((MyEdge) curredge);
-
-
-        }
-
-
-    }
+          // need to crate builders
     @Override
     public NodeData getNode(int key) {
-        return nodes.get(key);
+        if (nodes.containsKey(key)){
+        return nodes.get(key);}
+        else{
+            return null;
+        }
     }
 
     @Override
     public EdgeData getEdge(int src, int dest) {
-         return null;
+        if(edegs.containsKey(src)&& edegs.containsValue(dest)){
+            return edegs.get(src).get(dest);}
+        else{
+
+            return null;
+
+        }
     }
 
     @Override
     public void addNode(NodeData n) {
-        nodes.put(n.getKey(),n);
+        nodes.put(n.getKey(), (MyNode) n);
+
 
     }
 
+    public void addEdge(int src, EdgeData dest) {
+        if (edegs.containsKey(src)){
+        edegs.get(src).put(dest.getDest(),(MyEdge)dest);}
+        else{
+            HashMap<Integer,MyEdge> newedge = new HashMap<Integer,MyEdge>();
+            newedge.put(dest.getDest(),(MyEdge)dest);
+            edegs.put(src,newedge);
+        }
+    }
     @Override
     public void connect(int src, int dest, double w) {
-
+        if (!(edegs.containsKey(src)&& edegs.get(src).containsKey(dest))) {
+            MyEdge newed = new MyEdge(src,dest,w,"",0);// in case we dont have info and tag
+            edegs.get(src).put(dest,newed);
+        }
+        // whats hppend if thr is connectd?
     }
 
     @Override
     public Iterator<NodeData> nodeIter() {
-        return nodes.values().iterator();
+        return (Iterator<NodeData>) nodes.values();
     }
 
     @Override
     public Iterator<EdgeData> edgeIter() {
-        return edges.values().iterator();
+        return (Iterator<EdgeData>) edegs.values();
     }
 
     @Override
     public Iterator<EdgeData> edgeIter(int node_id) {
-        return null;
+
+        return (Iterator<EdgeData>) edegs.get(node_id).values();
     }
 
     @Override
-    public NodeData removeNode(int key) {
-        return nodes.remove(key);
-    }
+    public NodeData removeNode(int key) {// need to chak if the run time is ok.
+        if(nodes.containsKey(key)){
+             nodes.remove(key);
+             edegs.remove(key);
+             for (int i = 0; i<edegs.size();i++){
+                 if(edegs.get(i).containsKey(key)){
+                     edegs.get(i).remove(key);
+                 }
+            }
+             return nodes.remove(key);
+        }
+        else
+            return null;
+        }
+
 
     @Override
     public EdgeData removeEdge(int src, int dest) {
+        if (edegs.containsKey(src)){
+            if(edegs.get(src).containsKey(dest)){
+                return edegs.get(src).remove(dest);
+            }
+            return null;
+        }
         return null;
     }
 
@@ -82,7 +108,7 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
 
     @Override
     public int edgeSize() {
-        return edges.size();
+        return edegs.size();
     }
 
     @Override
