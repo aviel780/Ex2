@@ -1,7 +1,13 @@
 import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
+import com.google.gson.Gson;
 
+
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
@@ -14,6 +20,39 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
         this.MC = 0;
         this.nodes= new HashMap<Integer,MyNode>();
         this.edegs = new HashMap<Integer,Map<Integer,MyEdge>>();
+    }
+    public MyDirectedWeightedGraph(String json_file) {
+        try {
+            Gson gson = new Gson();
+            Reader reader = Files.newBufferedReader(Paths.get(json_file));
+            HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
+            String E = map.get("Edges").toString();
+            E = E.replace("{", "");
+            E = E.substring(1, E.length() - 2);
+            String[] Edges = E.split("}, ");
+            String N = map.get("Nodes").toString();
+            N = N.replace("{", "");
+            N = N.substring(1, N.length() - 2);
+            String[] Nodes = N.split("}, ");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.edegs = new HashMap<>();
+        this.nodes = new HashMap<>();
+        for (int i = 0; i < this.nodes.size(); i++) {
+            this.nodes.put(i, new MyNode(json_file, i));
+        }
+        for (int i = 0; i < this.edgeSize(); i++) {
+            MyEdge e = new MyEdge(json_file, i);
+            MyEdge temp = new MyEdge(json_file, i);
+            HashMap<Integer,MyEdge> tempedge = new HashMap<Integer,MyEdge>();
+            tempedge.put(temp.getDest(),temp);
+            this.edegs.put(e.getSrc(), tempedge);
+            //int tmp = e.getSrc();
+        }
+        this.MC = 0;
+
     }
     public MyDirectedWeightedGraph(DirectedWeightedGraph graph) {
        //
@@ -101,6 +140,7 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
         else
             return null;
         }
+
     public ArrayList<Integer> collection(){
         return srclist;
     }

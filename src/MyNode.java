@@ -1,6 +1,11 @@
-
+import com.google.gson.Gson;
 import api.GeoLocation;
 import api.NodeData;
+
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 
 
 public class MyNode implements NodeData{
@@ -34,6 +39,31 @@ public class MyNode implements NodeData{
         this.whight = w;
         this.tag= t;
         this.info = i;
+    }
+
+    public MyNode(String json_file, int index) {
+        try {
+            this.location = new MyGeo(json_file, index);
+            // create Gson instance
+            Gson gson = new Gson();
+            // create a reader
+            Reader reader = Files.newBufferedReader(Paths.get(json_file));
+            // convert JSON file to map
+            HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
+            String N = map.get("Nodes").toString();
+            N = N.replace("{", "");
+            N = N.substring(1, N.length() - 2);
+            String[] Nodes = N.split("}, ");
+            Nodes[index] = Nodes[index].replace("pos=", "");
+            String[] tmp = Nodes[index].split(",");
+            tmp[3] = tmp[3].replace(" id=", "");
+            double tmpID = Double.parseDouble(tmp[3]);
+            this.id = (int) tmpID;
+            // close reader
+            reader.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
     public MyNode(MyNode node){
         this.id = node.id;

@@ -1,7 +1,8 @@
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.NodeData;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.*;
 import java.util.List;
 
@@ -14,9 +15,9 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
     public void Mygraph(){
         this.graph = new MyDirectedWeightedGraph();
     }
+
     @Override
     public void init(DirectedWeightedGraph g) {
-
     this.graph=g;
     }
 
@@ -25,6 +26,13 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
 
         return this.graph;
     }
+
+    @Override
+    public DirectedWeightedGraph copy() {
+        DirectedWeightedGraph newgrhp = new MyDirectedWeightedGraph(graph);
+        return newgrhp;
+    }
+
     private static void DFS(MyDirectedWeightedGraph graph,int v,boolean[] visited){
         visited[v]=true;
 
@@ -32,11 +40,7 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
 
         }
     }
-    @Override
-    public DirectedWeightedGraph copy() {
-        DirectedWeightedGraph newgrhp = new MyDirectedWeightedGraph(graph);
-        return newgrhp;
-    }
+
 
     @Override
     public boolean isConnected() {
@@ -66,31 +70,24 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
 
     @Override
     public boolean save(String fileName) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try {
-            FileOutputStream file_out = new FileOutputStream(fileName);
-            ObjectOutputStream out = new ObjectOutputStream(file_out);
-            out.writeObject(this.graph);
-            out.close();
-            file_out.close();
+            gson.toJson(this.graph, new FileWriter("src/Ex2/data/file.json"));
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
-    }
+        return false;    }
 
     @Override
     public boolean load(String fileName) {
+
         try {
-            FileInputStream file_in = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(file_in);
-            this.graph = (DirectedWeightedGraph) in.readObject();
-            file_in.close();
-            in.close();
+            this.graph = new MyDirectedWeightedGraph(fileName);
             return true;
-        } catch (IOException | ClassNotFoundException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        return false;
-    }
+            return false;
+        }    }
 }
