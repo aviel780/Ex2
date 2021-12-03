@@ -30,13 +30,13 @@ public class MyGeo implements GeoLocation {
         return this.z;
     }
 
-    public void setx(double a){
+    public void setX(double a){
     this.x =a;
     }
-    public void sety (double b){
+    public void setY (double b){
     this.y=b;
     }
-    public void setz(double c){
+    public void setZ(double c){
     this.z = c;
     }
 

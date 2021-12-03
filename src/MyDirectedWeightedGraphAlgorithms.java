@@ -34,8 +34,8 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
     }
     @Override
     public DirectedWeightedGraph copy() {
-        DirectedWeightedGraph newgrhp = new MyDirectedWeightedGraph(graph);
-        return newgrhp;
+        DirectedWeightedGraph newGraph = new MyDirectedWeightedGraph(graph);
+        return newGraph;
     }
 
     @Override
