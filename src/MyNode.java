@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class MyNode implements NodeData{
     private int id;
-    private double whight;
+    private double weight;
     private MyGeo location;
     private String info;
     private int tag;
@@ -24,7 +24,7 @@ public class MyNode implements NodeData{
         double high = Double.parseDouble(cords[2]);
         MyGeo locs = new MyGeo(x, y, high);
         this.location = locs;
-        this.whight = 0;
+        this.weight = 0;
         this.tag= 0;
         this.info = "";
     }
@@ -36,7 +36,7 @@ public class MyNode implements NodeData{
         double high = Double.parseDouble(cords[2]);
         MyGeo locs = new MyGeo(x, y, high);
         this.location = locs;
-        this.whight = w;
+        this.weight = w;
         this.tag= t;
         this.info = i;
     }
@@ -68,7 +68,7 @@ public class MyNode implements NodeData{
     public MyNode(MyNode node){
         this.id = node.id;
         this.location = node.location;
-        this.whight = node.getWeight();
+        this.weight = node.getWeight();
         this.info = node.getInfo();
         this.tag = node.getTag();
     }
@@ -91,12 +91,12 @@ public class MyNode implements NodeData{
 
     @Override
     public double getWeight() {
-        return this.whight;
+        return this.weight;
     }
 
     @Override
     public void setWeight(double w) {
-    this.whight =w;
+    this.weight =w;
     }
 
     @Override
