@@ -2,26 +2,45 @@ import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.NodeData;
 
+import java.io.*;
 import java.util.List;
 
+
+
 public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphAlgorithms {
+    private DirectedWeightedGraph graph;
+
+
+    public void Mygraph(){
+        this.graph = new MyDirectedWeightedGraph();
+    }
     @Override
     public void init(DirectedWeightedGraph g) {
 
+    this.graph=g;
     }
 
     @Override
     public DirectedWeightedGraph getGraph() {
-        return null;
-    }
 
+        return this.graph;
+    }
+    private static void DFS(MyDirectedWeightedGraph graph,int v,boolean[] visited){
+        visited[v]=true;
+
+        for (int i =0; i<graph.collection().size();i++){
+
+        }
+    }
     @Override
     public DirectedWeightedGraph copy() {
-        return null;
+        DirectedWeightedGraph newgrhp = new MyDirectedWeightedGraph(graph);
+        return newgrhp;
     }
 
     @Override
     public boolean isConnected() {
+
         return false;
     }
 
@@ -46,12 +65,32 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
     }
 
     @Override
-    public boolean save(String file) {
+    public boolean save(String fileName) {
+        try {
+            FileOutputStream file_out = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(file_out);
+            out.writeObject(this.graph);
+            out.close();
+            file_out.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     @Override
-    public boolean load(String file) {
+    public boolean load(String fileName) {
+        try {
+            FileInputStream file_in = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(file_in);
+            this.graph = (DirectedWeightedGraph) in.readObject();
+            file_in.close();
+            in.close();
+            return true;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

@@ -2,16 +2,25 @@ import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     private int MC = 0;
     private Map<Integer,MyNode> nodes;
     private Map<Integer,Map<Integer, MyEdge>> edegs;
+    private ArrayList<Integer> srclist;
 
-          // need to crate builders
+    public MyDirectedWeightedGraph(){
+        this.MC = 0;
+        this.nodes= new HashMap<Integer,MyNode>();
+        this.edegs = new HashMap<Integer,Map<Integer,MyEdge>>();
+    }
+    public MyDirectedWeightedGraph(DirectedWeightedGraph graph) {
+       //
+    }
+
+
+    // need to crate builders
     @Override
     public NodeData getNode(int key) {
         if (nodes.containsKey(key)){
@@ -35,6 +44,9 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     @Override
     public void addNode(NodeData n) {
         nodes.put(n.getKey(), (MyNode) n);
+        srclist.add(n.getKey());
+
+
 
 
     }
@@ -76,6 +88,7 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     @Override
     public NodeData removeNode(int key) {// need to chak if the run time is ok.
         if(nodes.containsKey(key)){
+            srclist.remove(key);
              nodes.remove(key);
              edegs.remove(key);
              for (int i = 0; i<edegs.size();i++){
@@ -88,7 +101,9 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
         else
             return null;
         }
-
+    public ArrayList<Integer> collection(){
+        return srclist;
+    }
 
     @Override
     public EdgeData removeEdge(int src, int dest) {
