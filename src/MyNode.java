@@ -1,6 +1,12 @@
 
 import api.GeoLocation;
 import api.NodeData;
+import com.google.gson.Gson;
+
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 
 
 public class MyNode implements NodeData{
@@ -10,7 +16,44 @@ public class MyNode implements NodeData{
     private String info;
     private int tag;
 
+    public MyNode(String json_file, int index) {
+        try {
+            this.location = new MyGeo(json_file, index);
+            // create Gson instance
+            Gson gson = new Gson();
+            // create a reader
+            Reader reader = Files.newBufferedReader(Paths.get(json_file));
+            // convert JSON file to map
+            HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
+            String N = map.get("Nodes").toString();
+            N = N.replace("{", "");
+            N = N.substring(1, N.length() - 2);
+            String[] Nodes = N.split("}, ");
+            Nodes[index] = Nodes[index].replace("pos=", "");
+            String[] tmp = Nodes[index].split(",");
+            tmp[3] = tmp[3].replace(" id=", "");
+            double tmpID = Double.parseDouble(tmp[3]);
+            this.id = (int) tmpID;
+            // close reader
+            reader.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
+    public MyNode(String n) {
+        String[] node = n.split(", ");
+        node[0] = node[0].replace("pos=", "");
+        String[] pos = node[0].split(",");
+        double x = Double.parseDouble(pos[0]);
+        double y = Double.parseDouble(pos[1]);
+        double z = Double.parseDouble(pos[2]);
+        MyGeo l = new MyGeo(x, y, z);
+        this.location = l;
+        this.tag = 0;
+        node[1] = node[1].replace("id=", "");
+        this.id = (int) Double.parseDouble(node[1]);
+    }
     public MyNode(int id, String pos){
         this.id = id;
         String[] cords = pos.split(",");

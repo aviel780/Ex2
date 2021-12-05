@@ -2,18 +2,63 @@ import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import com.google.gson.Gson;
 
 public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     private int MC = 0;
-    private Map<Integer,MyNode> nodes;
-    private Map<Integer,Map<Integer, MyEdge>> edegs;
+    private Map<Integer,NodeData> nodes;
+    private Map<Integer,Map<Integer, EdgeData>> edegs;
     private ArrayList<Integer> srclist;
+    private int sizeofnodes,sizeofedegs;
+   private Iterator<EdgeData> edgeItr;
+    private Iterator<NodeData> nodeItr;
 
+    public MyDirectedWeightedGraph(String json_file) {
+        try {
+            Gson gson = new Gson();
+            Reader reader = Files.newBufferedReader(Paths.get(json_file));
+            HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
+            String E = map.get("Edges").toString();
+            E = E.replace("{", "");
+            E = E.substring(1, E.length() - 2);
+            String[] Edges = E.split("}, ");
+            String N = map.get("Nodes").toString();
+            N = N.replace("{", "");
+            N = N.substring(1, N.length() - 2);
+            String[] Nodes = N.split("}, ");
+            this.sizeofnodes = Nodes.length;
+            this.sizeofedegs = Edges.length;
+
+            this.edegs = new HashMap<>();
+            this.nodes = new HashMap<>();
+            for (int i = 0; i < this.sizeofnodes; i++) {
+                this.nodes.put(i, new MyNode(Nodes[i]));
+            }
+            for (int i = 0; i < this.sizeofedegs; i++) {
+                MyEdge e = new MyEdge(Edges[i]);
+                HashMap<Integer,EdgeData> newedge = new HashMap<Integer,EdgeData>();
+                newedge.put(e.getDest(),e);
+
+                this.edegs.put(e.getSrc(), newedge);
+
+            }
+            this.MC = 0;
+            this.nodeItr = nodes.values().iterator();
+            this.edgeItr = edegs.values().iterator();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public MyDirectedWeightedGraph(){
         this.MC = 0;
-        this.nodes= new HashMap<Integer,MyNode>();
-        this.edegs = new HashMap<Integer,Map<Integer,MyEdge>>();
+        this.nodes= new HashMap<Integer,NodeData>();
+        this.edegs = new HashMap<Integer,Map<Integer,EdgeData>>();
     }
     public MyDirectedWeightedGraph(DirectedWeightedGraph graph) {
        //
@@ -55,8 +100,8 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
         if (edegs.containsKey(src)){
         edegs.get(src).put(dest.getDest(),(MyEdge)dest);}
         else{
-            HashMap<Integer,MyEdge> newedge = new HashMap<Integer,MyEdge>();
-            newedge.put(dest.getDest(),(MyEdge)dest);
+            HashMap<Integer,EdgeData> newedge = new HashMap<Integer,EdgeData>();
+            newedge.put(dest.getDest(),(EdgeData)dest);
             edegs.put(src,newedge);
         }
     }
@@ -66,17 +111,23 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
             MyEdge newed = new MyEdge(src,dest,w,"",0);// in case we dont have info and tag
             edegs.get(src).put(dest,newed);
         }
-        // whats hppend if thr is connectd?
+        // whats hppend if ther is connectd?
     }
 
     @Override
     public Iterator<NodeData> nodeIter() {
-        return (Iterator<NodeData>) nodes.values();
+        this.nodeItr = nodes.values().iterator();
+        return this.nodeItr;
     }
 
     @Override
     public Iterator<EdgeData> edgeIter() {
-        return (Iterator<EdgeData>) edegs.values();
+        HashMap<Integer,EdgeData> hased = new HashMap<Integer,EdgeData>();
+        while (edegs.values().iterator().hasNext()){
+            hased.put(0, (EdgeData) edegs.values());
+        }
+        return hased.values().iterator();
+
     }
 
     @Override
