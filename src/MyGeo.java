@@ -1,10 +1,4 @@
 import api.GeoLocation;
-import com.google.gson.Gson;
-
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
 
 public class MyGeo implements GeoLocation {
      private double x;
@@ -15,30 +9,6 @@ public class MyGeo implements GeoLocation {
         this.x = x;
         this.y = y;
         this.z = 0;
-    }
-    public MyGeo(String json_file, int index) {
-        try {
-            // create Gson instance
-            Gson gson = new Gson();
-            // create a reader
-            Reader reader = Files.newBufferedReader(Paths.get(json_file));
-            // convert JSON file to map
-            HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
-            String N = map.get("Nodes").toString();
-            N = N.replace("{", "");
-            N = N.substring(1, N.length() - 2);
-            String[] Nodes = N.split("}, ");
-            Nodes[index] = Nodes[index].replace("pos=", "");
-            String[] tmp = Nodes[index].split(",");
-            this.x = Double.parseDouble(tmp[0]);
-            this.y = Double.parseDouble(tmp[1]);
-            this.z = 0;
-            // close reader
-            reader.close();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
     public MyGeo(double x , double y ){// the permetr z is 0 in all the cases
         this.x = x;
