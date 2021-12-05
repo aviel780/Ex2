@@ -13,7 +13,6 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     private int MC = 0;
     private Map<Integer,NodeData> nodes;
     private Map<Integer,Map<Integer, EdgeData>> edegs;
-    private ArrayList<Integer> srclist;
     private int sizeofnodes,sizeofedegs;
    private Iterator<EdgeData> edgeItr;
     private Iterator<NodeData> nodeItr;
@@ -45,11 +44,13 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
                 newedge.put(e.getDest(),e);
 
                 this.edegs.put(e.getSrc(), newedge);
-
             }
             this.MC = 0;
             this.nodeItr = nodes.values().iterator();
-            this.edgeItr = edegs.values().iterator();
+            HashMap<Integer,EdgeData> hased = new HashMap<Integer,EdgeData>();
+            while (edegs.values().iterator().hasNext()){
+                hased.put(0, (EdgeData) edegs.values());}
+            this.edgeItr = hased.values().iterator();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,7 +90,7 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     @Override
     public void addNode(NodeData n) {
         nodes.put(n.getKey(), (MyNode) n);
-        srclist.add(n.getKey());
+
 
 
 
@@ -139,7 +140,6 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     @Override
     public NodeData removeNode(int key) {// need to chak if the run time is ok.
         if(nodes.containsKey(key)){
-            srclist.remove(key);
              nodes.remove(key);
              edegs.remove(key);
              for (int i = 0; i<edegs.size();i++){
