@@ -86,86 +86,206 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
     }
     @Override
     public double shortestPathDist(int src, int dest) {
-        List<Integer> prev = new ArrayList<>();
-        List<Double> dist = new ArrayList<>();
-        PriorityQueue<Integer> q = new PriorityQueue<>();
-        Iterator<NodeData> it = this.graph.nodeIter();
-        NodeData n = new MyNode();
-
-        while (it.hasNext()) {
-            n = it.next();
-            if (n.getKey() != src)
-                dist.add(n.getKey(), Double.MAX_VALUE);
-            else {
-                dist.add(n.getKey(), 0.0);
-            }
-            prev.add(n.getKey(), null);
-            q.add(n.getKey());
+        if(src == dest){
+            return 0;
         }
-        if (!dist.contains(src)|| !dist.contains(dest)){// the src or the dest is not in the graph
+        List<NodeData> list = shortestPath(src,dest);
+        if( list == null){
             return -1;
         }
-        int u = src;
-        while (q.isEmpty()== false) {
-            u = dist(dist, q, u);
-            q.remove(u);
-            Iterator<Integer> iter = q.iterator();
-            double alt = 0;
-            int node = 0;
-            while (iter.hasNext()) {
-                node = iter.next();
-                if (this.graph.getEdge(u, node) != null && u != src && node != 0) {
-                    alt = dist.get(u) + this.graph.getEdge(u, node).getWeight();
-                    if (alt < dist.get(node)) {
-                        dist.remove(node);
-                        dist.add(node, alt);
-                        prev.remove(node);
-                        prev.add(node, u);
-                    }
-                }
-            }
+        double pathSize = 0;
+        Iterator <NodeData> itSrc= list.listIterator();
+        Iterator <NodeData> itDest= list.listIterator();
+        itDest.next();
+        while(itDest.hasNext()){
+            EdgeData e =graph.getEdge(itSrc.next().getKey(), itDest.next().getKey());
+            pathSize += e.getWeight();
         }
-        return dist.get(dest);
-    }
-    private int dist(List<Double> dist, PriorityQueue<Integer> q, int src) {
-        double min = Double.MAX_VALUE;
-        int min_index = -1;
-        Iterator<NodeData> it = this.graph.nodeIter();
-        NodeData n = new MyNode();
-
-        while (it.hasNext()) {
-            n = it.next();
-            double tmp = 0;
-            if (this.graph.getEdge(src, n.getKey()) != null) {
-                min_index = q.peek();
-                tmp = this.graph.getEdge(src, n.getKey()).getWeight() + dist.get(src);
-                if (tmp < dist.get(n.getKey())) {
-                    dist.remove(n.getKey());
-                    dist.add(n.getKey(), tmp);
-                }
-                if (this.graph.getEdge(src, n.getKey()).getWeight() <= min && q.contains(n.getKey()) && dist.get(n.getKey()) != 0) {
-                    min = this.graph.getEdge(src, n.getKey()).getWeight();
-                    min_index = n.getKey();
-                }
-            }
-        }
-        return min_index;
+        return pathSize;
     }
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
-        return null;
+        List <NodeData> pathList = new ArrayList<>();
+        int prev = Integer.MAX_VALUE;
+        HashMap<Integer,Integer> changedAt = new HashMap<>();
+        changedAt.put(src,null);
+        HashMap<Integer,Double> shortestPath = new HashMap<>();
+        Iterator <NodeData> iternode = graph.nodeIter();
+        while(iternode.hasNext()){
+            NodeData nod =iternode.next();
+            if(nod.getKey() == src){
+                shortestPath.put(src,0.0);
+            }else{
+                shortestPath.put(nod.getKey(),Double.MAX_VALUE);
+            }
+        }
+        Iterator <EdgeData> iteredge = graph.edgeIter(src);
+        while(iteredge.hasNext()){
+            EdgeData e = iteredge.next();
+            shortestPath.put(e.getDest(),e.getWeight());
+            changedAt.put(e.getDest(),src);
+        }
+        graph.getNode(src).setTag(1);//visited
+        while(true){
+            double distshort = Double.MAX_VALUE;
+            NodeData closesrechnode = null;
+            Iterator <NodeData> itenode = graph.nodeIter();
+            while(itenode.hasNext()){
+                NodeData n = itenode.next();
+                if(n.getTag() == 1){
+                    continue;
+                }
+                double currDist = shortestPath.get(n.getKey());
+                if(currDist == Double.MAX_VALUE){
+                    continue;
+                }
+                if(currDist < distshort){
+                    distshort = currDist;
+                    closesrechnode = n;
+                }
+            }
+            NodeData currNode =closesrechnode;
+            if(currNode == null){
+                return null;
+            }
+            if(currNode.getKey() == dest) {
+                int temp = dest;
+                pathList.add(0,graph.getNode(dest));
+                while (true) {
+                    prev = changedAt.get(temp);
+                    if(prev == Integer.MAX_VALUE){
+                        break;
+                    }
+                    pathList.add(0,graph.getNode(prev));
+                    temp = prev;
+                }
+                pathList.add(0,graph.getNode(src));
+                return pathList;
+            }
+            currNode.setTag(1);
+            Iterator <EdgeData> itEdges = graph.edgeIter(currNode.getKey());
+            while(itEdges.hasNext()){
+                EdgeData e = itEdges.next();
+                if(graph.getNode(e.getDest()).getTag() == 1){
+                    continue;
+                }
+                if(shortestPath.get(currNode.getKey()) + e.getWeight() < shortestPath.get(e.getDest())){
+                    shortestPath.put(e.getDest(), shortestPath.get(currNode.getKey())+e.getWeight());
+                    changedAt.put(e.getDest(), currNode.getKey());
+                }
+            }
+        }
     }
+
+
 
     @Override
     public NodeData center() {
-        return null;
+
+        int size = this.graph.nodeSize();
+        double min =  Double.MAX_VALUE;
+        double [][] mat = new double[size][size];
+        double maxrow = 0,maxmin=Double.MAX_VALUE;
+        NodeData ans =null;
+        for (int k=0 ; k <size ;k++)
+        {
+            for(int m=0;m<size;m++) {
+                if(k==m)
+                    mat[k][m]=Integer.MAX_VALUE;
+                mat[k][m]=shortestPathDist(k,m);
+            }
+        }
+        for (int i=0 ; i <size ;i++)
+        {
+            for(int j=0;j<size;j++) {
+                if(i==j)
+                    continue;
+                if(maxrow<mat[i][j])
+                    maxrow=mat[i][j];
+            }
+            if(maxmin>maxrow) {
+                maxmin = maxrow;
+                ans=this.graph.getNode(i);
+            }
+        }
+        return ans;
     }
 
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
-        return null;
+        int size = cities.size();
+        double [] [] mat = new double[size][size];
+
+        //save all shortest paths between every two nodes in a matrix
+        for(int i = 0 ; i < size ; i++) {
+            for (int j = 0; j < size; j++) {
+                if (i == j)
+                    mat[i][i] = Double.MAX_VALUE;
+                mat[i][j] = shortestPathDist(cities.get(i).getKey(), cities.get(j).getKey());
+            }
+        }
+        double shortest= Double.MAX_VALUE, curr=0;
+        int [] ans = new int[cities.size()];
+        int [] Per = new int[cities.size()];
+        ArrayList <int[]> permuted= new ArrayList<>();
+        //init both arrays to be the indexes of the original list
+        for(int i = 0 ;i < cities.size();i++ )
+        {
+            ans[i]=i;
+            Per[i]=i;
+        }
+        //save all the permutaions of the array per into permuted list
+        trnsf(permuted,Per,Per.length);
+        //go over al the permuted arrays
+        for(int i=0;i < permuted.size() ; i++)
+        {
+            Per=permuted.get(i);
+            //compute the path dist between all of the nodes in the array
+            for(int j= 0 ; j < cities.size()-1 ; j++){
+                curr+=mat[Per[j]][Per[j+1]];
+            }
+            //check if the current array generated the shortest path
+            if(curr<shortest){
+                shortest=curr;
+                ans=Per;
+            }
+        }
+        List<NodeData> end = new ArrayList<>();
+        //put all the elements from the ans array (and the nodes we need to go through between them) to the end list
+        for (int i=0;i<ans.length-1;i++){
+            end.addAll(shortestPath(ans[i],ans[i+1]));
+        }
+        return end;
+
     }
+    private void trnsf(ArrayList<int[]> temp, int [] p, int e)
+    {
+        if(e==1)
+            temp.add(p) ;
+        else{
+            e=e-1;
+            trnsf(temp, p, e);
+
+            for(int i=0 ; i< e;i++)
+            {
+                if(e%2==0)
+                {
+                    int Temp = p[i];
+                    p[i] = p[e];
+                    p[e] = Temp;
+                }
+                else
+                {
+                    int Temp = p[0];
+                    p[0] = p[e];
+                    p[e] = Temp;
+                }
+                trnsf(temp, p, e);
+            }
+        }
+    }
+
 
     @Override
     public boolean save(String fileName) {

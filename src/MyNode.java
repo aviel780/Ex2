@@ -97,12 +97,12 @@ public class MyNode implements NodeData{
 
     @Override
     public int getKey() {
-        return  id;
+        return  this.id;
     }
 
     @Override
     public GeoLocation getLocation() {
-        return location;
+        return this.location;
     }
 
     @Override
