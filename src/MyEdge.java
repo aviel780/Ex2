@@ -65,6 +65,15 @@ public class MyEdge implements EdgeData {
         this.tag =tag;
     }
 
+    public MyEdge() {
+        this.src=0;
+        this.tag = 0;
+        this.info="";
+        this.dest = 0;
+        this.whight = 0;
+
+    }
+
     @Override
     public int getSrc() {
         return this.src;

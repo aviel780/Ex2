@@ -86,6 +86,14 @@ public class MyNode implements NodeData{
         this.tag = node.getTag();
     }
 
+    public MyNode() {
+        this.id = 0;
+        this.location = new MyGeo(0,0,0);
+        this.weight = 0;
+        this.info = "";
+        this.tag = 0;
+    }
+
 
     @Override
     public int getKey() {
