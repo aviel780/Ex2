@@ -71,7 +71,7 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
 
     @Override
     public EdgeData getEdge(int src, int dest) {
-        if(edges.containsKey(src)&& edges.containsValue(dest)){
+        if(edges.containsKey(src)&& edges.get(src).containsKey(dest)){
             return edges.get(src).get(dest);}
         else{
             return null;
@@ -88,15 +88,16 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
         edges.get(src).put(dest.getDest(),(MyEdge)dest);}
         else{
             HashMap<Integer,EdgeData> newedge = new HashMap<Integer,EdgeData>();
-            newedge.put(dest.getDest(),(EdgeData)dest);
+            newedge.put(dest.getDest(),(MyEdge)dest);
             edges.put(src,newedge);
         }
     }
     @Override
     public void connect(int src, int dest, double w) {
         if (!(edges.containsKey(src)&& edges.get(src).containsKey(dest))) {
-            MyEdge newed = new MyEdge(src,dest,w,"",0);// in case we dont have info and tag
-            edges.get(src).put(dest,newed);
+            MyEdge newed = new MyEdge(src,dest,w,"",0); // in case we dont have info and tag
+           addEdge(src,newed);
+
         }// what if connected
     }
 
@@ -108,9 +109,11 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
 
     @Override
     public Iterator<EdgeData> edgeIter() {
+
         HashMap<Integer,EdgeData> hased = new HashMap<Integer,EdgeData>();
         while (edges.values().iterator().hasNext()){
-            hased.put(0, (EdgeData) edges.values());}
+            hased.put(0, (EdgeData) edges.values());
+            }
         this.edgeItr = hased.values().iterator();
         return  this.edgeItr;
     }
@@ -139,9 +142,13 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
 
     @Override
     public EdgeData removeEdge(int src, int dest) {
-        if (edges.containsKey(src)){
-            if(edges.get(src).containsKey(dest)){
-                return edges.get(src).remove(dest);
+        if (this.edges.containsKey(src)){
+            if(this.edges.get(src).containsKey(dest)){
+                EdgeData ans = this.edges.get(src).remove(dest);
+                 if(this.edges.get(src).size()==0){
+                     edges.remove(src);
+                 }
+                 return ans;
             }
             return null;
         }
