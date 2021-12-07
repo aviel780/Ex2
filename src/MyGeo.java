@@ -67,9 +67,7 @@ public class MyGeo implements GeoLocation {
     public void setY (double b){
     this.y=b;
     }
-    public void setZ(double c){
-    this.z = c;
-    }
+
 
     @Override
     public double distance(GeoLocation g) {

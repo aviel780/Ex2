@@ -1,5 +1,5 @@
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
+    import static org.junit.jupiter.api.Assertions.*;
+    import org.junit.jupiter.api.Test;
 
 public class Mynodetest {
     MyGeo g1=new MyGeo(0.0,0.0,0.0);
@@ -15,55 +15,35 @@ public class Mynodetest {
     MyNode n3=new MyNode(2,g3,8.1,t,s);
     MyNode n4=new MyNode(3,g4,2.654,5,s);
 
-    MyDirectedWeightedGraph gr1=new MyDirectedWeightedGraph();
-
-
-    @Test
-    void addNode() {
-        gr1.addNode(n1);
-        gr1.addNode(n2);
-         assertEquals(n1,gr1.getNode(0));
-         assertEquals(n2,gr1.getNode(1));
-
-    }
-
-
-    @Test
-    void getNode() {
-        gr1.addNode(n3);
-        assertEquals(n3,gr1.getNode(2));
-
-    }
 
     @Test
     void getTag() {
-        gr1.addNode(n1);
+        assertEquals(t,n1.getTag());
 
     }
     @Test
     void getLocation() {
-        gr1.connect(0,1,3.524);
-        gr1.connect(1,0,1.2);
+        assertEquals(g1,n1.getLocation());
     }
     @Test
     void setLocation() {
-        gr1.connect(0,1,3.524);
-        gr1.connect(1,0,1.2);
+      n1.setLocation(g3);
+
+      assertEquals(g3,n1.getLocation());
     }
     @Test
     void getInfo() {
-        gr1.connect(0,1,3.524);
-        gr1.connect(1,0,1.2);
+        assertEquals("",n3.getInfo());
     }
     @Test
     void setInfo() {
-        gr1.connect(0,1,3.524);
-        gr1.connect(1,0,1.2);
+        n3.setInfo("the info is chingd");
+        assertEquals("the info is chingd",n3.getInfo());
     }
     @Test
     void setTag() {
-        gr1.connect(0,1,3.524);
-        gr1.connect(1,0,1.2);
+        n4.setTag(99);
+        assertEquals(99,n4.getTag());
     }
 
 

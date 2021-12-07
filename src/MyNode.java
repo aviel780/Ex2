@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class MyNode implements NodeData{
     private int id;
     private double weight;
-    private MyGeo location;
+    private GeoLocation location;
     private String info;
     private int tag;
 
@@ -114,7 +114,8 @@ public class MyNode implements NodeData{
 
     @Override
     public void setLocation(GeoLocation p) {
-        this.location = new MyGeo(p.x(),p.y(),p.z());
+
+        this.location = p;
     }
 
     @Override

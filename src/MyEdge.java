@@ -1,6 +1,5 @@
 import api.EdgeData;
 import com.google.gson.Gson;
-
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -34,8 +33,8 @@ public class MyEdge implements EdgeData {
             this.weight = Double.parseDouble(tmp[1]);
             this.dest = (int) tmpDest;
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         this.info = "";
     }
