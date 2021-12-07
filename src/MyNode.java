@@ -2,7 +2,6 @@
 import api.GeoLocation;
 import api.NodeData;
 import com.google.gson.Gson;
-
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -74,6 +73,13 @@ public class MyNode implements NodeData{
         double high = Double.parseDouble(cords[2]);
         MyGeo locs = new MyGeo(x, y, high);
         this.location = locs;
+        this.weight = weight;
+        this.tag= tag;
+        this.info = info;
+    }
+    public MyNode(int id, MyGeo pos, double weight, int tag , String info){
+        this.id = id;
+        this.location = pos;
         this.weight = weight;
         this.tag= tag;
         this.info = info;
