@@ -48,7 +48,7 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
         for (int i = 0; i < tmp.edgeSize(); i++){
             gr1[i] = new Vector<>();
             gr2[i] = new Vector<>();}
-        while(it.hasNext()){ // we dont have the first element
+        while(it.hasNext()){ // we don't have the first element
                 int dest = it.next().getDest();
                 int src = it.next().getSrc();
             gr1[src].add(dest);
@@ -235,13 +235,13 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
             ans[i]=i;
             Per[i]=i;
         }
-        //save all the permutaions of the array per into permuted list
+        //save all the permutations of the array per into permuted list
         trnsf(permuted,Per,Per.length);
         //go over al the permuted arrays
         for(int i=0;i < permuted.size() ; i++)
         {
             Per=permuted.get(i);
-            //compute the path dist between all of the nodes in the array
+            //compute the path dist between all the nodes in the array
             for(int j= 0 ; j < cities.size()-1 ; j++){
                 curr+=mat[Per[j]][Per[j+1]];
             }

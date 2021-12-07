@@ -41,7 +41,7 @@ public class MyGeo implements GeoLocation {
             ex.printStackTrace();
         }
     }
-    public MyGeo(double x , double y ){// the permetr z is 0 in all the cases
+    public MyGeo(double x , double y ){// the parameter z equals to 0 in all cases
         this.x = x;
         this.y = y;
         this.z = 0;

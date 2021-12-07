@@ -66,7 +66,7 @@ public class MyNode implements NodeData{
         this.tag= 0;
         this.info = "";
     }
-    public MyNode(int id, String pos, double w, int t , String i){
+    public MyNode(int id, String pos, double weight, int tag , String info){
         this.id = id;
         String[] cords = pos.split(",");
         double x = Double.parseDouble(cords[0]);
@@ -74,9 +74,9 @@ public class MyNode implements NodeData{
         double high = Double.parseDouble(cords[2]);
         MyGeo locs = new MyGeo(x, y, high);
         this.location = locs;
-        this.weight = w;
-        this.tag= t;
-        this.info = i;
+        this.weight = weight;
+        this.tag= tag;
+        this.info = info;
     }
     public MyNode(MyNode node){
         this.id = node.id;

@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class MyEdge implements EdgeData {
     private int src;
     private int dest;
-    private double whight;
+    private double weight;
     private String info;
     private int tag;
 
@@ -31,7 +31,7 @@ public class MyEdge implements EdgeData {
             double tmpDest = Double.parseDouble(tmp[2]);
 
             this.src = (int) tmpSrc;
-            this.whight = Double.parseDouble(tmp[1]);
+            this.weight = Double.parseDouble(tmp[1]);
             this.dest = (int) tmpDest;
 
         } catch (Exception ex) {
@@ -42,7 +42,7 @@ public class MyEdge implements EdgeData {
     public MyEdge(MyEdge edge){
         this.src= edge.getSrc();
         this.dest= edge.getDest();
-        this.whight = edge.getWeight();
+        this.weight = edge.getWeight();
         this.info = edge.getInfo();
         this.tag =edge.getTag();
     }
@@ -52,7 +52,7 @@ public class MyEdge implements EdgeData {
         ed[1] = ed[1].replace("w=", "");
         ed[2] = ed[2].replace("dest=", "");
         this.src = (int) Double.parseDouble(ed[0]);
-        this.whight = Double.parseDouble(ed[1]);
+        this.weight = Double.parseDouble(ed[1]);
         this.dest = (int) Double.parseDouble(ed[2]);
         this.tag = 0;
         this.info = "";
@@ -60,7 +60,7 @@ public class MyEdge implements EdgeData {
     public MyEdge(int src, int dest, double wh, String in , int tag ){
         this.src= src;
         this.dest= dest;
-        this.whight = wh;
+        this.weight = wh;
         this.info = in;
         this.tag =tag;
     }
@@ -70,7 +70,7 @@ public class MyEdge implements EdgeData {
         this.tag = 0;
         this.info="";
         this.dest = 0;
-        this.whight = 0;
+        this.weight = 0;
 
     }
 
@@ -79,7 +79,7 @@ public class MyEdge implements EdgeData {
         return this.src;
     }
 
-    public void setsrc(int s ){
+    public void setSrc(int s ){
         this.src =s;
     }
 
@@ -87,16 +87,17 @@ public class MyEdge implements EdgeData {
     public int getDest() {
         return this.dest;
     }
-    public void setSrc(int x){
-        this.src = x;
+
+    public void setDest(int x){
+        this.dest = x;
     }
 
     @Override
     public double getWeight() {
-        return this.whight;
+        return this.weight;
     }
     public void sedwhiget(double x){
-        this.whight=x;
+        this.weight=x;
     }
 
     @Override
