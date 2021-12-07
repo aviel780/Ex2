@@ -96,7 +96,7 @@ public class MyEdge implements EdgeData {
     public double getWeight() {
         return this.weight;
     }
-    public void sedwhiget(double x){
+    public void setwhiget(double x){
         this.weight=x;
     }
 

@@ -78,6 +78,7 @@ public class MyNode implements NodeData{
         this.tag= tag;
         this.info = info;
     }
+
     public MyNode(MyNode node){
         this.id = node.id;
         this.location = node.location;
