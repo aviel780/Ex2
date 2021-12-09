@@ -14,8 +14,9 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     private Map<Integer,NodeData> nodes;
     private Map<Integer,Map<Integer, EdgeData>> edges;
     private int sizeOfNodes,sizeOfEdges;
-   private Iterator<EdgeData> edgeItr;
+    private Iterator<EdgeData> edgeItr;
     private Iterator<NodeData> nodeItr;
+    private ArrayList<EdgeData> edgelist;
 
     public MyDirectedWeightedGraph(String json_file) {
         try {
@@ -33,8 +34,10 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
             this.sizeOfNodes = Nodes.length;
             this.sizeOfEdges = Edges.length;
 
-            this.edges = new HashMap<>();
-            this.nodes = new HashMap<>();
+            this.edges = new HashMap<Integer,Map<Integer,EdgeData>>();
+            this.nodes = new HashMap<Integer,NodeData>();
+            this.edgelist = new ArrayList<EdgeData>();
+
             for (int i = 0; i < this.sizeOfNodes; i++) {
                 this.nodes.put(i, new MyNode(Nodes[i]));
             }
@@ -43,6 +46,7 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
                 HashMap<Integer,EdgeData> newedge = new HashMap<Integer,EdgeData>();
                 newedge.put(e.getDest(),e);
                 this.edges.put(e.getSrc(), newedge);
+                this.edgelist.add(e);
             }
             this.MC = 0;
         } catch (IOException e) {
@@ -53,13 +57,32 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
         this.MC = 0;
         this.nodes= new HashMap<Integer,NodeData>();
         this.edges = new HashMap<Integer,Map<Integer,EdgeData>>();
+        this.edgelist = new ArrayList<EdgeData>();
+
     }
+
     public MyDirectedWeightedGraph(DirectedWeightedGraph graph) {
-       //
+        this.MC = graph.getMC();
+        this.sizeOfEdges=graph.edgeSize();
+        this.sizeOfNodes= graph.nodeSize();
+        this.edgeItr=graph.edgeIter();
+        this.nodeItr = graph.nodeIter();
+        while (graph.nodeIter().hasNext()){
+            NodeData temp = graph.nodeIter().next();
+            nodes.put(temp.getKey(),temp);
+        }
+        while (graph.edgeIter().hasNext()){
+            EdgeData temp = graph.edgeIter().next();
+            HashMap<Integer,EdgeData> temedge = new HashMap<Integer,EdgeData>();
+            temedge.put(temp.getDest(),temp);
+            edges.put(temp.getSrc(),temedge);
+        }
+
+
     }
 
 
-    // need to crate builders
+
     @Override
     public NodeData getNode(int key) {
         if (nodes.containsKey(key)){
@@ -81,15 +104,19 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     @Override
     public void addNode(NodeData n) {
         nodes.put(n.getKey(), (MyNode) n);
+        nodeItr= nodes.values().iterator();
     }
 
     public void addEdge(int src, EdgeData dest) {
         if (edges.containsKey(src)){
-        edges.get(src).put(dest.getDest(),(MyEdge)dest);}
+            edges.get(src).put(dest.getDest(),(MyEdge)dest);
+            edgelist.add((MyEdge)dest);
+        }
         else{
             HashMap<Integer,EdgeData> newedge = new HashMap<Integer,EdgeData>();
             newedge.put(dest.getDest(),(MyEdge)dest);
             edges.put(src,newedge);
+            edgelist.add((MyEdge)dest);
         }
     }
     @Override
@@ -98,7 +125,7 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
             MyEdge newed = new MyEdge(src,dest,w,"",0); // in case we dont have info and tag
            addEdge(src,newed);
 
-        }// what if connected
+        }
     }
 
     @Override
@@ -109,23 +136,25 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
 
     @Override
     public Iterator<EdgeData> edgeIter() {
+        this.edgeItr = edgelist.iterator();
+        return this.edgeItr;
+    }
 
-        HashMap<Integer,EdgeData> hased = new HashMap<Integer,EdgeData>();
-        while (edges.values().iterator().hasNext()){
-            hased.put(0, (EdgeData) edges.values());
+    @Override
+    public Iterator<EdgeData> edgeIter(int node_id) {
+        ArrayList<EdgeData> templist = new ArrayList<EdgeData>();
+        for (int i = 0 ; i < edgelist.size();i++){
+            EdgeData temp = edgelist.get(i);
+            if(temp.getSrc() == node_id){
+                templist.add(temp);
             }
-        this.edgeItr = hased.values().iterator();
-        return  this.edgeItr;
+
+        }
+        return  templist.iterator();
     }
 
     @Override
-    public Iterator<EdgeData> edgeIter(int node_id) {// not completed
-
-        return (Iterator<EdgeData>) edges.get(node_id).values();
-    }
-
-    @Override
-    public NodeData removeNode(int key) {// need to chak if the run time is ok.
+    public NodeData removeNode(int key) {
         if(nodes.containsKey(key)){
              nodes.remove(key);
              edges.remove(key);

@@ -2,6 +2,8 @@ import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.EdgeData;
 import com.google.gson.Gson;
+
+import javax.swing.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -51,11 +53,10 @@ public class Ex2 {
      *
      */
     public static void runGUI(String json_file) {
-        DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file);
-        // ****** Add your code here ******
-        //
-        // ********************************
+        DirectedWeightedGraphAlgorithms alg = getGrapgAlgo(json_file); //if we use the extends way it will work. (this is boaz's line)
+
     }
+
     public static MyDirectedWeightedGraph readGRaphFromJson(String json_file) {
         MyDirectedWeightedGraph ans = new MyDirectedWeightedGraph();
         try {

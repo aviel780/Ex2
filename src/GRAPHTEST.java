@@ -93,6 +93,10 @@ class GRAPHTEST {
         gr2.addEdge(1,e2);
         gr2.addEdge(2,e3);
         gr2.addEdge(3,e4);
+        gr2.addNode(n1);
+        gr2.addNode(n2);
+        gr2.addNode(n3);
+        gr2.addNode(n4);
         Iterator<EdgeData> temp = gr2.edgeIter();
         EdgeData tempp=temp.next();
         assertEquals(e1, tempp);
@@ -100,6 +104,22 @@ class GRAPHTEST {
 
     @Test
     void testEdgeIter() {
+        MyDirectedWeightedGraph gr2=new MyDirectedWeightedGraph();
+        MyEdge e1=new MyEdge(0,1,1.25684,"",0);
+        MyEdge e2=new MyEdge(1,2,2.84,"",0);
+        MyEdge e3=new MyEdge(2,3,8.456,"",0);
+        MyEdge e4=new MyEdge(3,4,6.2498,"",0);
+        gr2.addEdge(0,e1);
+        gr2.addEdge(1,e2);
+        gr2.addEdge(2,e3);
+        gr2.addEdge(3,e4);
+        gr2.addNode(n1);
+        gr2.addNode(n2);
+        gr2.addNode(n3);
+        gr2.addNode(n4);
+        Iterator<EdgeData> temp = gr2.edgeIter(0);
+        EdgeData tempp=temp.next();
+        assertEquals(e1, tempp);
     }
 
     @Test
