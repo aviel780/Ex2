@@ -41,7 +41,7 @@ public class Ex2 {
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
         // ****** Add your code here ******
          DirectedWeightedGraph graph = getGrapg(json_file);
-                DirectedWeightedGraphAlgorithms graphAlgo = new MyDirectedWeightedGraphAlgorithms();
+                DirectedWeightedGraphAlgorithms graphAlgo = new MyDirectedWeightedGraphAlgorithms();// the builder is empty
                 graphAlgo.init(graph);
                 return graphAlgo;
         // ********************************

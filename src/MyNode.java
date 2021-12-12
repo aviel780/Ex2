@@ -10,13 +10,14 @@ import java.util.HashMap;
 
 public class MyNode implements NodeData{
     private int id;
-    private double weight;
+    private double weight = Integer.MAX_VALUE;
     private GeoLocation location;
-    private String info;
-    private int tag;
+    private String info = "White";
+    private int tag = -1;
 
     public MyNode(String json_file, int index) {
         try {
+            // set the location by the permeters
             this.location = new MyGeo(json_file, index);
             // create Gson instance
             Gson gson = new Gson();
@@ -24,12 +25,14 @@ public class MyNode implements NodeData{
             Reader reader = Files.newBufferedReader(Paths.get(json_file));
             // convert JSON file to map
             HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
-            String N = map.get("Nodes").toString();
-            N = N.replace("{", "");
-            N = N.substring(1, N.length() - 2);
-            String[] Nodes = N.split("}, ");
-            Nodes[index] = Nodes[index].replace("pos=", "");
-            String[] tmp = Nodes[index].split(",");
+            // create list of nodes by the word nodes form the map
+            String Nodes = map.get("Nodes").toString();
+            // replace
+            Nodes = Nodes.replace("{", "");
+            Nodes = Nodes.substring(1, Nodes.length() - 2);
+            String[] Nodesstr = Nodes.split("}, ");
+            Nodesstr[index] = Nodesstr[index].replace("pos=", "");
+            String[] tmp = Nodesstr[index].split(",");
             tmp[3] = tmp[3].replace(" id=", "");
             double tmpID = Double.parseDouble(tmp[3]);
             this.id = (int) tmpID;
@@ -49,7 +52,7 @@ public class MyNode implements NodeData{
         double z = Double.parseDouble(pos[2]);
         MyGeo l = new MyGeo(x, y, z);
         this.location = l;
-        this.tag = 0;
+        this.tag = -1;
         node[1] = node[1].replace("id=", "");
         this.id = (int) Double.parseDouble(node[1]);
     }
@@ -62,8 +65,8 @@ public class MyNode implements NodeData{
         MyGeo locs = new MyGeo(x, y, high);
         this.location = locs;
         this.weight = 0;
-        this.tag= 0;
-        this.info = "";
+        this.tag= -1;
+        this.info = "White";
     }
     public MyNode(int id, String pos, double weight, int tag , String info){
         this.id = id;
@@ -84,6 +87,20 @@ public class MyNode implements NodeData{
         this.tag= tag;
         this.info = info;
     }
+    public MyNode(int id, MyGeo pos){
+        this.id = id;
+        this.location = pos;
+        this.weight = 0;
+        this.tag= -1;
+        this.info = "White";
+    }
+    public MyNode(MyGeo pos){
+        this.id = 0;
+        this.location = pos;
+        this.weight = 0;
+        this.tag= -1;
+        this.info = "White";
+    }
 
     public MyNode(MyNode node){
         this.id = node.id;
@@ -97,8 +114,16 @@ public class MyNode implements NodeData{
         this.id = 0;
         this.location = new MyGeo(0,0,0);
         this.weight = 0;
-        this.info = "";
-        this.tag = 0;
+        this.info = "White";
+        this.tag = -1;
+    }
+
+    public MyNode(int i) {
+        this.id =i;
+        this.location = new MyGeo(0,0,0);
+        this.weight = 0;
+        this.info = "White";
+        this.tag = -1;
     }
 
 

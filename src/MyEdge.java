@@ -10,7 +10,7 @@ public class MyEdge implements EdgeData {
     private int dest;
     private double weight;
     private String info;
-    private int tag;
+    private int tag =0;
 
     public MyEdge(String json_file, int index) {
         try {
@@ -32,6 +32,7 @@ public class MyEdge implements EdgeData {
             this.src = (int) tmpSrc;
             this.weight = Double.parseDouble(tmp[1]);
             this.dest = (int) tmpDest;
+            this.tag = 0;
 
         } catch (Exception e) {
             e.printStackTrace();

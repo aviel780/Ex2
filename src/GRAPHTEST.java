@@ -58,6 +58,9 @@ class GRAPHTEST {
         MyEdge e1=new MyEdge(0,1,1.25684,"",0);
         MyEdge e2=new MyEdge(n2.getKey(),n1.getKey(),0.65166,"",0);
         gr2.addEdge(0,e1);
+        gr2.addEdge(0,e2);
+        gr2.addEdge(0,e3);
+
 
         assertEquals(e1,gr2.getEdge(0,1));
 

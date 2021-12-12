@@ -31,6 +31,7 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
             N = N.replace("{", "");
             N = N.substring(1, N.length() - 2);
             String[] Nodes = N.split("}, ");
+            System.out.println(Edges.length);
             this.sizeOfNodes = Nodes.length;
             this.sizeOfEdges = Edges.length;
 
@@ -43,10 +44,8 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
             }
             for (int i = 0; i < this.sizeOfEdges; i++) {
                 MyEdge e = new MyEdge(Edges[i]);
-                HashMap<Integer,EdgeData> newedge = new HashMap<Integer,EdgeData>();
-                newedge.put(e.getDest(),e);
-                this.edges.put(e.getSrc(), newedge);
-                this.edgelist.add(e);
+                addEdge(e.getSrc(),e);
+
             }
             this.MC = 0;
         } catch (IOException e) {
@@ -54,34 +53,35 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
         }
     }
     public MyDirectedWeightedGraph(){
-        this.MC = 0;
-        this.nodes= new HashMap<Integer,NodeData>();
-        this.edges = new HashMap<Integer,Map<Integer,EdgeData>>();
         this.edgelist = new ArrayList<EdgeData>();
+        this.nodes= new HashMap<Integer,NodeData>();
+     this.edges = new HashMap<Integer,Map<Integer,EdgeData>>();
+       this.MC = 0;
+       this.sizeOfNodes = 0;
+       this.sizeOfEdges = 0;
 
     }
 
     public MyDirectedWeightedGraph(DirectedWeightedGraph graph) {
+        this.MC = 0;
+        this.nodes = new HashMap<Integer, NodeData>();
+        this.edges = new HashMap<Integer, Map<Integer, EdgeData>>();
+        this.edgelist = new ArrayList<EdgeData>();
         this.MC = graph.getMC();
-        this.sizeOfEdges=graph.edgeSize();
-        this.sizeOfNodes= graph.nodeSize();
-        this.edgeItr=graph.edgeIter();
+        this.sizeOfEdges = graph.edgeSize();
+        this.sizeOfNodes = graph.nodeSize();
+        this.edgeItr = graph.edgeIter();
         this.nodeItr = graph.nodeIter();
-        while (graph.nodeIter().hasNext()){
-            NodeData temp = graph.nodeIter().next();
-            nodes.put(temp.getKey(),temp);
+        for (int i = 0; i < this.sizeOfNodes; i++) {
+            NodeData temp = graph.getNode(i);
+            nodes.put(temp.getKey(), temp);
         }
-        while (graph.edgeIter().hasNext()){
-            EdgeData temp = graph.edgeIter().next();
-            HashMap<Integer,EdgeData> temedge = new HashMap<Integer,EdgeData>();
-            temedge.put(temp.getDest(),temp);
-            edges.put(temp.getSrc(),temedge);
+        while(edgeItr.hasNext()){
+            EdgeData temp = edgeItr.next();
+            HashMap<Integer,EdgeData> tempedge = new HashMap<Integer,EdgeData>();
+            edges.put(temp.getSrc(),tempedge );
         }
-
-
     }
-
-
 
     @Override
     public NodeData getNode(int key) {
@@ -103,9 +103,17 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
 
     @Override
     public void addNode(NodeData n) {
-        nodes.put(n.getKey(), (MyNode) n);
-        nodeItr= nodes.values().iterator();
+//        nodes.put(n.getKey(), (MyNode) n);
+//        nodeItr= nodes.values().iterator();
+        if (nodes.containsKey(n.getKey())) {
+            return;
+        }
+        nodes.put(n.getKey(), (MyNode)n);
+        edges.put(n.getKey(), new HashMap<Integer,EdgeData>());
+        MC++;
+
     }
+
 
     public void addEdge(int src, EdgeData dest) {
         if (edges.containsKey(src)){
@@ -198,4 +206,8 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
     public int getMC() {
         return MC;
     }
+    public ArrayList<EdgeData> getedgelist() {
+        return this.edgelist;
+    }
+
 }
