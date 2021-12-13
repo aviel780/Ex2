@@ -1,48 +1,48 @@
 ## Ex2
 
 # MyNode Class: Represents the vertices
-  Attributes:
-    * ID- The node's number
-    * Location- Represented by 3 perameters
-    * Weight- Represents the node's weight
-    * Info- The node's information
-    * Tag- Conatains the node's tag
+  **Attributes:**
+  * ID- The node's number
+  * Location- Represented by 3 perameters
+  * Weight- Represents the node's weight
+  * Info- The node's information
+  * Tag- Conatains the node's tag
  
- The class contains the following methods:
-    * Costructor method which gets a Json file
-    * Default constructor
-    * Costructor which gets different perameters
-    *Getters and setters methos for each attribut
+ **The class contains the following methods:**
+ * Costructor method which gets a Json file
+ * Default constructor
+ * Costructor which gets different perameters
+ * Getters and setters methos for each attribut
  
 # MyEdge Class: Represents the graph's edges
-  Attributes:
-    * Src- Represents the edge's sorce vertex
-    * Dest- Represents the edge's destination vertex
-    * Weight- Represents the edge's weight
-    * Info- Contains information about the edge
-    * Tag- The edge's tag
+  **Attributes:**
+  * Src- Represents the edge's sorce vertex
+  * Dest- Represents the edge's destination vertex
+  * Weight- Represents the edge's weight
+  * Info- Contains information about the edge
+  * Tag- The edge's tag
  
- The class contains the following methods:
-    * Costructor method which gets a Json file
-    * Default constructor
-    * Costructor which gets different perameters
-    *Getters and Setters for each attribute
+ **The class contains the following methods:**
+ * Costructor method which gets a Json file
+ * Default constructor
+ * Costructor which gets different perameters
+ * Getters and Setters for each attribute
     
 # MyGeo Class: Represents the location
-  Attributes:
-      * x- width
-      * y- length
-      * z- hight, set as 0
+  **Attributes:**
+  * x- width
+  * y- length
+  * z- hight, set as 0
 
-  The class contains the following methods:
-      * Costructor method which gets a Json file
-      * Default constructor
-      * Costructor which gets different perameters
-      * Distance- Returns the distance between two 3D points
-      * Getters and Setters for each attribute
+  **The class contains the following methods:**
+  * Costructor method which gets a Json file
+  * Default constructor
+  * Costructor which gets different perameters
+  * Distance- Returns the distance between two 3D points
+  * Getters and Setters for each attribute
 
 # MyDirectedWeightedGraph Class: Represents the graph
-  Attributes:
+  **Attributes:**
       * MC- The number of activities that were made on the graph
       * Nodes- A hashmap that contains all the vertices's info, the key's type is an integer and the value is NodeData
       * Edges- A hashmap which containd all the edges info, the key's type is a hashmap that contains an integer key that leads to another integer, the final value is EdgeData
@@ -52,7 +52,7 @@
       * EdgeIter- An iterator object for the Edges list
       * EdgeList- An arrayList that contains info about the edges
  
- The class contains the following methods:
+ **The class contains the following methods:**
  * Costructor method which gets a Json file
  * Default constructor
  * Costructor which gets different perameters
@@ -70,7 +70,7 @@
   **Attributes:**
   * Object of MyDirectedWeightedGraph type
   
-  The class contains the following methods:
+  **The class contains the following methods:**
   * Costructor method which gets a Json file
   * Default constructor
   * Costructor which gets different perameters
