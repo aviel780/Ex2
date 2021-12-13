@@ -1,7 +1,6 @@
 import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -23,14 +22,14 @@ public class MyDirectedWeightedGraph implements DirectedWeightedGraph {
             Gson gson = new Gson();
             Reader reader = Files.newBufferedReader(Paths.get(json_file));
             HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
-            String E = map.get("Edges").toString();
-            E = E.replace("{", "");
-            E = E.substring(1, E.length() - 2);
-            String[] Edges = E.split("}, ");
-            String N = map.get("Nodes").toString();
-            N = N.replace("{", "");
-            N = N.substring(1, N.length() - 2);
-            String[] Nodes = N.split("}, ");
+            String Eges = map.get("Edges").toString();
+            Eges = Eges.replace("{", "");
+            Eges = Eges.substring(1, Eges.length() - 2);
+            String[] Edges = Eges.split("}, ");
+            String Node = map.get("Nodes").toString();
+            Node = Node.replace("{", "");
+            Node = Node.substring(1, Node.length() - 2);
+            String[] Nodes = Node.split("}, ");
             System.out.println(Edges.length);
             this.sizeOfNodes = Nodes.length;
             this.sizeOfEdges = Edges.length;

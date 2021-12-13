@@ -41,7 +41,7 @@ public class Ex2 {
     public static DirectedWeightedGraphAlgorithms getGrapgAlgo(String json_file) {
         // ****** Add your code here ******
          DirectedWeightedGraph graph = getGrapg(json_file);
-                DirectedWeightedGraphAlgorithms graphAlgo = new MyDirectedWeightedGraphAlgorithms();// the builder is empty
+                DirectedWeightedGraphAlgorithms graphAlgo = new MyDirectedWeightedGraphAlgorithms();
                 graphAlgo.init(graph);
                 return graphAlgo;
         // ********************************
@@ -63,16 +63,16 @@ public class Ex2 {
             Gson gson = new Gson();
             Reader reader = Files.newBufferedReader(Paths.get(json_file));
             HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
-            String E = map.get("Edges").toString();
-            E = E.replace("{", "");
-            E = E.substring(1, E.length() - 2);
-            String[] Edges = E.split("}, ");
-            String N = map.get("Nodes").toString();
-            N = N.replace("{", "");
-            N = N.substring(1, N.length() - 2);
-            String[] Nodes = N.split("}, ");
+            String edg = map.get("Edges").toString();
+            edg = edg.replace("{", "");
+            edg = edg.substring(1, edg.length() - 2);
+            String[] Edgeslist = edg.split("}, ");
+            String Nod = map.get("Nodes").toString();
+            Nod = Nod.replace("{", "");
+            Nod = Nod.substring(1, Nod.length() - 2);
+            String[] Nodes = Nod.split("}, ");
             int sizeOfNodes = Nodes.length;
-            int sizeOfEdges = Edges.length;
+            int sizeOfEdges = Edgeslist.length;
 
             for (int i = 0; i < sizeOfNodes; i++) {
                 String temp = Nodes[i];
@@ -80,7 +80,7 @@ public class Ex2 {
                 ans.addNode(tempnode);
             }
             for (int i = 0; i < sizeOfEdges; i++) {
-                MyEdge e = new MyEdge(Edges[i]);
+                MyEdge e = new MyEdge(Edgeslist[i]);
                 HashMap<Integer, EdgeData> newedge = new HashMap<Integer,EdgeData>();
                 ans.addEdge(e.getDest(),e);
             }

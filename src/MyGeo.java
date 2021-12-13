@@ -25,15 +25,21 @@ public class MyGeo implements GeoLocation {
             Reader reader = Files.newBufferedReader(Paths.get(json_file));
             // convert JSON file to map
             HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
-            String N = map.get("Nodes").toString();
-            N = N.replace("{", "");
-            N = N.substring(1, N.length() - 2);
-            String[] Nodes = N.split("}, ");
-            Nodes[index] = Nodes[index].replace("pos=", "");
-            String[] tmp = Nodes[index].split(",");
-            this.x = Double.parseDouble(tmp[0]);
-            this.y = Double.parseDouble(tmp[1]);
-            this.z = Double.parseDouble(tmp[2]);
+            // put all the nodes to string
+            String Nod = map.get("Nodes").toString();
+            // delate the sayn {
+            Nod = Nod.replace("{", "");
+            //create substring
+            Nod = Nod.substring(1, Nod.length() - 2);
+            // puse all the nodes to string list by the sayn
+            String[] Nodeslist = Nod.split("}, ");
+            // delate the word pos form thr list
+            Nodeslist[index] = Nodeslist[index].replace("pos=", "");
+            // puse all the nodesto string list
+            String[] tmplist = Nodeslist[index].split(",");
+            this.x = Double.parseDouble(tmplist[0]);
+            this.y = Double.parseDouble(tmplist[1]);
+            this.z = Double.parseDouble(tmplist[2]);
             // close reader
             reader.close();
 
@@ -71,9 +77,9 @@ public class MyGeo implements GeoLocation {
 
     @Override
     public double distance(GeoLocation g) {
-        double dist=Math.pow(this.x-g.x(),2)+Math.pow(this.y-g.y(),2)+Math.pow(this.z-g.z(),2);
-        dist=Math.sqrt(dist);
-        return dist;
+        double distan=Math.pow(this.x-g.x(),2)+Math.pow(this.y-g.y(),2)+Math.pow(this.z-g.z(),2);
+        distan=Math.sqrt(distan);
+        return distan;
 
     }
 }

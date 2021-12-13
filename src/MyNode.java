@@ -27,15 +27,21 @@ public class MyNode implements NodeData{
             HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
             // create list of nodes by the word nodes form the map
             String Nodes = map.get("Nodes").toString();
-            // replace
+            // replace the open non (delet the openers
             Nodes = Nodes.replace("{", "");
+            // substring the node list
             Nodes = Nodes.substring(1, Nodes.length() - 2);
+            // puse all the nodes to node list
             String[] Nodesstr = Nodes.split("}, ");
+            // remove the index word in each of node
             Nodesstr[index] = Nodesstr[index].replace("pos=", "");
+            // puse all the nodes to string list
             String[] tmp = Nodesstr[index].split(",");
             tmp[3] = tmp[3].replace(" id=", "");
-            double tmpID = Double.parseDouble(tmp[3]);
-            this.id = (int) tmpID;
+            // cast the string to double number
+            double idtemp = Double.parseDouble(tmp[3]);
+            // casting it to int and dfine at to the if vairebal
+            this.id = (int) idtemp;
             // close reader
             reader.close();
         } catch (Exception ex) {
@@ -43,27 +49,24 @@ public class MyNode implements NodeData{
         }
     }
 
-    public MyNode(String n) {
-        String[] node = n.split(", ");
-        node[0] = node[0].replace("pos=", "");
-        String[] pos = node[0].split(",");
-        double x = Double.parseDouble(pos[0]);
-        double y = Double.parseDouble(pos[1]);
-        double z = Double.parseDouble(pos[2]);
-        MyGeo l = new MyGeo(x, y, z);
-        this.location = l;
+    public MyNode(String n) { // builder by strings
+        String[] nodest = n.split(", "); // puse the nodes to string list by ,
+        nodest[0] = nodest[0].replace("pos=", ""); // delet the word pos for the 0 place
+        String[] posst = nodest[0].split(",");// puse to string list the permetr
+        MyGeo locaiton = new MyGeo(Double.parseDouble(posst[0]),Double.parseDouble(posst[1]),Double.parseDouble(posst[2]));
+        this.location = locaiton; // set the location after dfine by the parmeter
         this.tag = -1;
-        node[1] = node[1].replace("id=", "");
-        this.id = (int) Double.parseDouble(node[1]);
+        nodest[1] = nodest[1].replace("id=", "");// delet th id from place 1
+        this.id = (int) Double.parseDouble(nodest[1]);// dfine the id
+        this.weight = 0;
+        this.tag= -1;
+        this.info = "White";
     }
     public MyNode(int id, String pos){
         this.id = id;
         String[] cords = pos.split(",");
-        double x = Double.parseDouble(cords[0]);
-        double y = Double.parseDouble(cords[1]);
-        double high = Double.parseDouble(cords[2]);
-        MyGeo locs = new MyGeo(x, y, high);
-        this.location = locs;
+        MyGeo locaiton = new MyGeo(Double.parseDouble(cords[0]),Double.parseDouble(cords[1]),Double.parseDouble(cords[2]));
+        this.location = locaiton;
         this.weight = 0;
         this.tag= -1;
         this.info = "White";
@@ -71,11 +74,8 @@ public class MyNode implements NodeData{
     public MyNode(int id, String pos, double weight, int tag , String info){
         this.id = id;
         String[] cords = pos.split(",");
-        double x = Double.parseDouble(cords[0]);
-        double y = Double.parseDouble(cords[1]);
-        double high = Double.parseDouble(cords[2]);
-        MyGeo locs = new MyGeo(x, y, high);
-        this.location = locs;
+        MyGeo locaiton = new MyGeo(Double.parseDouble(cords[0]),Double.parseDouble(cords[1]),Double.parseDouble(cords[2]));
+        this.location = locaiton;
         this.weight = weight;
         this.tag= tag;
         this.info = info;

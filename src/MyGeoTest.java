@@ -6,13 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MyGeoTest {
 
     double x= 0.222;
-    double y=2200.0;
-    double z= 3.222;
-    double u= 0.0001;
-    double t=11111.2;
+    double y=220.0;
+    double z= 4.2342;
+    double w= 0.0001;
+    double f=22222.2;
 
     MyGeo g1 = new MyGeo(x,y,z);
-    MyGeo g2 = new MyGeo(u,t,z);
+    MyGeo g2 = new MyGeo(w,f,z);
 
     @Test
     void x() {

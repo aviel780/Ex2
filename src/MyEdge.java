@@ -14,24 +14,39 @@ public class MyEdge implements EdgeData {
 
     public MyEdge(String json_file, int index) {
         try {
+            // create Gson instance
             Gson gson = new Gson();
+            // create a reader
             Reader reader = Files.newBufferedReader(Paths.get(json_file));
+            // convert JSON file to map
             HashMap<?, ?> map = gson.fromJson(reader, HashMap.class);
-            String E = map.get("Edges").toString();
-            E = E.replace("{", "");
-            E = E.substring(1, E.length() - 2);
-            String[] Edges = E.split("}, ");
-            String[] tmp = Edges[index].split(",");
-            tmp[0] = tmp[0].replace("src=", "");
-            tmp[1] = tmp[1].replace(" w=", "");
-            tmp[2] = tmp[2].replace(" dest=", "");
+            //create list of edges by the word nodes form the map
+            String Edge = map.get("Edges").toString();
+            // replace the open to non (delet the openers)
+            Edge = Edge.replace("{", "");
+            // substring the edge list
+            Edge = Edge.substring(1, Edge.length() - 2);
+            // puse all the nodes to edge list of string
+            String[] Edgeslist = Edge.split("}, ");
+            // puse all the nodes to edge list of string
+            String[] temp = Edgeslist[index].split(",");
+            //remove the word src from the place of the srcses
+            temp[0] = temp[0].replace("src=", "");
+            //remove the word w from the place of the whightes
+            temp[1] = temp[1].replace(" w=", "");
+            //remove the word dest from the place of the dests
+            temp[2] = temp[2].replace(" dest=", "");
+            //close the reader
             reader.close();
-            double tmpSrc = Double.parseDouble(tmp[0]);
-            double tmpDest = Double.parseDouble(tmp[2]);
-
-            this.src = (int) tmpSrc;
-            this.weight = Double.parseDouble(tmp[1]);
-            this.dest = (int) tmpDest;
+            // prase the string number double
+            double tempSrc = Double.parseDouble(temp[0]);
+            // prase the string number double
+            double tempDest = Double.parseDouble(temp[2]);
+            //cast the double number and dfine it to the src vairebal
+            this.src = (int) tempSrc;
+            this.weight = Double.parseDouble(temp[1]);
+            //cast the double number and dfine it to the dest vairebal
+            this.dest = (int) tempDest;
             this.tag = 0;
 
         } catch (Exception e) {
@@ -39,6 +54,7 @@ public class MyEdge implements EdgeData {
         }
         this.info = "";
     }
+
     public MyEdge(MyEdge edge){
         this.src= edge.getSrc();
         this.dest= edge.getDest();

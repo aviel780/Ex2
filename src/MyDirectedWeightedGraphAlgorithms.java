@@ -17,7 +17,7 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
     }
 
     public MyDirectedWeightedGraphAlgorithms() {
-
+        DirectedWeightedGraph n = new MyDirectedWeightedGraph();
     }
 
 
@@ -49,9 +49,9 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
         if (this.graph.nodeSize() == 0) {
             return true;
         }
-        for (Iterator<NodeData> itN = graph.nodeIter(); itN.hasNext(); ) {
-            NodeData n = itN.next();
-            boolean temp = this.BFS(n);
+        for (Iterator<NodeData> iternod = graph.nodeIter(); iternod.hasNext(); ) {
+            NodeData nd = iternod.next();
+            boolean temp = this.BFS(nd);
             resetTag();
             if (!temp) {
                 return false;
@@ -60,40 +60,44 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
         return true;
     }
     private boolean BFS(NodeData n) {
-        Queue<NodeData> q = new LinkedList<>();
+        Queue<NodeData> que = new LinkedList<>();
         n.setTag(0);
-        int count = 1;
-        q.add(n);
-        while (!q.isEmpty()) {
-            NodeData temp = q.poll();
-            for (Iterator<EdgeData> itN = graph.edgeIter(temp.getKey()); itN.hasNext(); ) {
-                EdgeData next = itN.next();
-                NodeData dest = this.graph.getNode(next.getDest());
-                if (dest.getTag() == -1) {
-                    dest.setTag(0);
-                    q.add(dest);
-                    count++;
+        int ans = 1;
+        que.add(n);
+        while (!que.isEmpty()) {
+            NodeData temp = que.poll();
+            for (Iterator<EdgeData> iternod = graph.edgeIter(temp.getKey()); iternod.hasNext(); ) {
+                EdgeData ne = iternod.next();
+                NodeData de = this.graph.getNode(ne.getDest());
+                if (de.getTag() == -1) {
+                    de.setTag(0);
+                    que.add(de);
+                    ans++;
                 }
             }
         }
-        return (count == this.graph.nodeSize());
+        if(ans == this.graph.nodeSize()){
+            return true;
+        }
+
+        return false;
     }
 
     private void resetTag() {
-        for (Iterator<NodeData> itN = graph.nodeIter(); itN.hasNext(); ) {
-            NodeData n = itN.next();
-            n.setTag(-1);
+        for (Iterator<NodeData> iternod = graph.nodeIter(); iternod.hasNext(); ) {
+            NodeData next = iternod.next();
+            next.setTag(-1);
         }
     }
     @Override
     public double shortestPathDist(int src, int dest) {
         resetInfo(); resetTag(); resetWeight();
-        double dist = Dijkstra(this.graph.getNode(src), this.graph.getNode(dest));
+        double distan = Dijkstra(this.graph.getNode(src), this.graph.getNode(dest));
         resetInfo(); resetTag(); resetWeight();
-        if (dist == Integer.MAX_VALUE) {
+        if (distan == Integer.MAX_VALUE) {
             return -1;
         }
-        return dist;
+        return distan;
     }
     public void setG(DirectedWeightedGraph x){
         this.graph=x;
@@ -101,32 +105,31 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
 
     @Override
     public List<NodeData> shortestPath(int src, int dest) {
-        List<NodeData> al = new LinkedList<>();
+        List<NodeData> ans = new LinkedList<>();
         if (shortestPathDist(src, dest) == -1) {
             return null;
         }
         if (src == dest) {
-            al.add(this.graph.getNode(dest));
-            return al;
+            ans.add(this.graph.getNode(dest));
+            return ans;
         }
         resetInfo(); resetTag(); resetWeight();
         Dijkstra(this.graph.getNode(src), this.graph.getNode(dest));
-        NodeData Nsrc = this.graph.getNode(src);
-        NodeData Ndest = this.graph.getNode(dest);
-        List <NodeData> reverseAL = new LinkedList<>();
-        NodeData temp = Ndest;
+        NodeData nodsrc = this.graph.getNode(src);
+        NodeData nodest = this.graph.getNode(dest);
+        List <NodeData> rev = new LinkedList<>();
+        NodeData temp = nodest;
         while ( temp.getKey()!=0) {
-            //temp.getTag() != 0 &&
-            reverseAL.add(temp);
+            rev.add(temp);
             temp = this.graph.getNode(temp.getTag());
         }
-        NodeData[] arr = reverseAL.toArray(NodeData[]::new);
-        al.add(Nsrc);
-        for (int i = reverseAL.size()- 1; i >= 0; i--) {
-            al.add(arr[i]);
+        NodeData[] arr = rev.toArray(NodeData[]::new);
+        ans.add(nodsrc);
+        for (int i = rev.size()- 1; i >= 0; i--) {
+            ans.add(arr[i]);
         }
         resetInfo(); resetTag(); resetWeight();
-        return al;
+        return ans;
     }
     private double Dijkstra(NodeData src, NodeData dest) {
         double shortest = Integer.MAX_VALUE;
@@ -139,58 +142,58 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
         src.setWeight(0.0);
         pq.add(src);
         while (!pq.isEmpty()) {
-            NodeData temp = pq.poll();
-            if(temp.getInfo()=="White"){
-                temp.setInfo("Black");
-                if (temp.getKey() == dest.getKey()) {
-                    return temp.getWeight();
+            NodeData tempp = pq.poll();
+            if(tempp.getInfo()=="White"){
+                tempp.setInfo("Black");
+                if (tempp.getKey() == dest.getKey()) {
+                    return tempp.getWeight();
                 }
-            for (Iterator<EdgeData> it = this.graph.edgeIter(temp.getKey()); it.hasNext(); ) {
-                EdgeData e = it.next();
+            for (Iterator<EdgeData> iteredge = this.graph.edgeIter(tempp.getKey()); iteredge.hasNext(); ) {
+                EdgeData e = iteredge.next();
                 NodeData n = this.graph.getNode(e.getDest());
                 if (n.getInfo() == "White") {
-                    if (n.getWeight() > temp.getWeight() + e.getWeight()) {
-                        n.setWeight(Math.min(n.getWeight(), temp.getWeight() + e.getWeight()));
-                        n.setTag(temp.getKey());
+                    if (n.getWeight() > tempp.getWeight() + e.getWeight()) {
+                        n.setWeight(Math.min(n.getWeight(), tempp.getWeight() + e.getWeight()));
+                        n.setTag(tempp.getKey());
                     }
                     pq.add(n);
                 }
             }
-            temp.setInfo("Black");
+                tempp.setInfo("Black");
 
         }}
         return shortest;
     }
     private void resetInfo() {
-        for (Iterator<NodeData> itN = graph.nodeIter(); itN.hasNext();) {
-            NodeData n = itN.next();
-            n.setInfo("White");
+        for (Iterator<NodeData> iternod = graph.nodeIter(); iternod.hasNext();) {
+            NodeData nextnode = iternod.next();
+            nextnode.setInfo("White");
         }}
     private void resetWeight() {
-        for (Iterator<NodeData> itN = graph.nodeIter(); itN.hasNext(); ) {
-            NodeData n = itN.next();
-            n.setWeight(Integer.MAX_VALUE);
+        for (Iterator<NodeData> iternod = graph.nodeIter(); iternod.hasNext(); ) {
+            NodeData nextnode = iternod.next();
+            nextnode.setWeight(Integer.MAX_VALUE);
         }
     }
 
     @Override
     public NodeData center() {
         MyNode center = null;
-        MyNode magic = new MyNode(-1);
-        double distAns = Double.MAX_VALUE;
-        for (Iterator<NodeData> itN = graph.nodeIter(); itN.hasNext(); ) {
-            NodeData n = itN.next();
+        MyNode emptylop = new MyNode(-1);
+        double dista = Double.MAX_VALUE;
+        for (Iterator<NodeData> iternod = graph.nodeIter(); iternod.hasNext(); ) {
+            NodeData nod = iternod.next();
             resetInfo();resetWeight();resetTag();
-            Dijkstra(n, magic);
-            double distTemp = Double.MIN_VALUE;
+            Dijkstra(nod, emptylop);
+            double distt = Double.MIN_VALUE;
             for (Iterator<NodeData> it = graph.nodeIter(); it.hasNext(); ) {
                 NodeData k = it.next();
-                if (k.getWeight() > distTemp)
-                    distTemp = k.getWeight();
+                if (k.getWeight() > distt)
+                    distt = k.getWeight();
             }
-            if (distTemp < distAns) {
-                distAns = distTemp;
-                center = (MyNode) n;
+            if (distt < dista) {
+                dista = distt;
+                center = (MyNode) nod;
             }
         }
         return center;
@@ -200,7 +203,8 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
         List<NodeData> ans = new ArrayList<>();
-        List<NodeData> citiesset = new ArrayList<>();
+        Queue<NodeData> citiesset =  new LinkedList<NodeData>();
+//        List<NodeData> citiesset = new ArrayList<>();
         double mindist;
         double tempdist;
 
@@ -209,7 +213,7 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
                 citiesset.add(city);
             }
         }
-        NodeData currnode = citiesset.remove(0);
+        NodeData currnode = citiesset.poll();
         ans.add(currnode);
         NodeData nodetoadd = null;
         while(citiesset.size()>0){
