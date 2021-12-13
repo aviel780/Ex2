@@ -1,4 +1,4 @@
-## Ex2 ##
+### Ex2
 
 # MyNode Class: Represents the vertices
   **Attributes:**
