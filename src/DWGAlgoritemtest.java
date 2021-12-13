@@ -75,13 +75,13 @@ import java.util.*;
             DirectedWeightedGraph graph = g.getGraph();
             assertEquals(graph.getNode(8), g.center());
 
-//            g.load("C:\\Users\\aviel\\IdeaProjects\\Ex_2\\Ex2\\data\\G2.json");
-//            graph = g.getGraph();
-//            assertEquals(graph.getNode(0), g.center());
-//
-//            g.load("C:\\Users\\aviel\\IdeaProjects\\Ex_2\\Ex2\\data\\G3.json");
-//            graph = g.getGraph();
-//            assertEquals(graph.getNode(40), g.center());
+            g.load("C:\\Users\\aviel\\IdeaProjects\\Ex_2\\Ex2\\data\\G2.json");
+            graph = g.getGraph();
+            assertEquals(graph.getNode(0), g.center());
+
+            g.load("C:\\Users\\aviel\\IdeaProjects\\Ex_2\\Ex2\\data\\G3.json");
+            graph = g.getGraph();
+            assertEquals(graph.getNode(40), g.center());
 
 //            g.load("data/1000Nodes.json");
 //            graph = g.getGraph();
@@ -98,23 +98,24 @@ import java.util.*;
 
         @Test
         void tsp() {
-            MyDirectedWeightedGraph g = new MyDirectedWeightedGraph("C:\\Users\\aviel\\IdeaProjects\\Ex_2\\Ex2\\data\\G3.json");
+            MyDirectedWeightedGraph g = new MyDirectedWeightedGraph("C:\\Users\\aviel\\IdeaProjects\\Ex_2\\Ex2\\data\\G2.json");
             MyDirectedWeightedGraphAlgorithms graph = new MyDirectedWeightedGraphAlgorithms(g);
             List<NodeData> n = new ArrayList<>();
+            List<NodeData> temp = new ArrayList<>();
             n.add(this.g.getNode(0));
             n.add(this.g.getNode(1));
             n.add(this.g.getNode(2));
             n.add(this.g.getNode(3));
             n.add(this.g.getNode(9));
-            n = graph.tsp(n);
+            temp = graph.tsp(n);
             List<NodeData> ans = new ArrayList<>();
+            ans.add(this.g.getNode(0));
             ans.add(this.g.getNode(1));
-            ans.add(this.g.getNode(9));
             ans.add(this.g.getNode(2));
             ans.add(this.g.getNode(3));
-            ans.add(this.g.getNode(0));
+            ans.add(this.g.getNode(9));
             for (int i = 0; i < ans.size(); i++) {
-                assertEquals(ans.get(i).getKey(), n.get(i).getKey());
+                assertEquals(ans.get(i).getKey(), temp.get(i).getKey());
             }
         }
 

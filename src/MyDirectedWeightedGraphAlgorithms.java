@@ -199,38 +199,33 @@ public class MyDirectedWeightedGraphAlgorithms implements DirectedWeightedGraphA
 
     @Override
     public List<NodeData> tsp(List<NodeData> cities) {
-        LinkedList<NodeData> ret = new LinkedList<>(); //list to be returned
-        if (cities.isEmpty()) return ret;
-        NodeData currNode = cities.get(0); //current node we are working on
-        ret.add(currNode);
-        HashSet<NodeData> visitedCities = new HashSet<>();
-        while (!cities.isEmpty()) { //while there are still unvisited cities
-            visitedCities.add(currNode);
-            double minDistance = Double.MAX_VALUE;
-            NodeData nextNode = currNode;
-            cities.remove(currNode);
-            List<NodeData> path = new LinkedList<>();
+        List<NodeData> ans = new ArrayList<>();
+        List<NodeData> citiesset = new ArrayList<>();
+        double mindist;
+        double tempdist;
 
-            for (NodeData node : cities) { //For each unvisited node out of the cities, calculate the one which is closest, save its path
-                if (!visitedCities.contains(node)) {
-                    double currDistance = this.shortestPathDist(currNode.getKey(), node.getKey());
-                    if (currDistance < minDistance) {
-                        minDistance = currDistance;
-                        nextNode = node;
-                        path = this.shortestPath(currNode.getKey(), node.getKey());
-                    }
-                }
-            }
-            currNode = nextNode;
-            for (NodeData node : path) { //The closest node's path (out of all cities) is appended to the list which is to be returned
-                if (node != path.get(0)) {
-                    ret.addLast(node);
-                    visitedCities.add(node);
-                    cities.remove(node); //if exists
-                }
+        for (NodeData city:cities){
+            if(!citiesset.contains(city)){
+                citiesset.add(city);
             }
         }
-        return ret;
+        NodeData currnode = citiesset.remove(0);
+        ans.add(currnode);
+        NodeData nodetoadd = null;
+        while(citiesset.size()>0){
+            mindist = Double.MAX_VALUE;
+            for (NodeData n : citiesset){
+                tempdist = shortestPathDist(currnode.getKey(),n.getKey());
+                if(tempdist<mindist){
+                    mindist=tempdist;
+                    nodetoadd=n;
+                }
+            }
+            ans.add(nodetoadd);
+            citiesset.remove(nodetoadd);
+            currnode=nodetoadd;
+        }
+        return ans;
     }
 
     @Override
