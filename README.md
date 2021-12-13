@@ -1,6 +1,6 @@
 ## Ex2
 
-#MyNode Class: Represents the vertices
+# MyNode Class: Represents the vertices
   Attributes:
     * ID- The node's number
     * Location- Represented by 3 perameters
@@ -14,7 +14,7 @@
     * Costructor which gets different perameters
     *Getters and setters methos for each attribut
  
-#MyEdge Class: Represents the graph's edges
+# MyEdge Class: Represents the graph's edges
   Attributes:
     * Src- Represents the edge's sorce vertex
     * Dest- Represents the edge's destination vertex
@@ -28,7 +28,7 @@
     * Costructor which gets different perameters
     *Getters and Setters for each attribute
     
-#MyGeo Class: Represents the location
+# MyGeo Class: Represents the location
   Attributes:
       * x- width
       * y- length
@@ -41,7 +41,7 @@
       * Distance- Returns the distance between two 3D points
       * Getters and Setters for each attribute
 
-#MyDirectedWeightedGraph Class: Represents the graph
+# MyDirectedWeightedGraph Class: Represents the graph
   Attributes:
       * MC- The number of activities that were made on the graph
       * Nodes- A hashmap that contains all the vertices's info, the key's type is an integer and the value is NodeData
@@ -66,7 +66,7 @@
       * EdgeIter- Returns the edge's iterator
       * NodeSize- Returns the number of nodes
       * EdgeSize- Returns the number of edges
-#MyDirectedWeightedGraphAlgorithems: Represents the algo class
+# MyDirectedWeightedGraphAlgorithems: Represents the algo class
   Attributes:
       * Object of MyDirectedWeightedGraph type
   
