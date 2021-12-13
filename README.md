@@ -67,7 +67,7 @@
  * NodeSize- Returns the number of nodes
  * EdgeSize- Returns the number of edges
 # MyDirectedWeightedGraphAlgorithems: Represents the algo class
-  Attributes:
+  **Attributes:**
   * Object of MyDirectedWeightedGraph type
   
   The class contains the following methods:
