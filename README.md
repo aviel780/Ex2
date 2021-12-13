@@ -43,14 +43,14 @@
 
 # MyDirectedWeightedGraph Class: Represents the graph
   **Attributes:**
-      * MC- The number of activities that were made on the graph
-      * Nodes- A hashmap that contains all the vertices's info, the key's type is an integer and the value is NodeData
-      * Edges- A hashmap which containd all the edges info, the key's type is a hashmap that contains an integer key that leads to another integer, the final value is EdgeData
-      * SizeOfNodes- Represents the number of node the graph contains
-      * SizeOfEdges- Represents the number of edges the graph contains
-      * NodeIter- An iterator object for the Nodes list
-      * EdgeIter- An iterator object for the Edges list
-      * EdgeList- An arrayList that contains info about the edges
+  * MC- The number of activities that were made on the graph
+  * Nodes- A hashmap that contains all the vertices's info, the key's type is an integer and the value is NodeData
+  * Edges- A hashmap which containd all the edges info, the key's type is a hashmap that contains an integer key that leads to another integer, the final value is EdgeData
+  * SizeOfNodes- Represents the number of node the graph contains
+  * SizeOfEdges- Represents the number of edges the graph contains
+  * NodeIter- An iterator object for the Nodes list
+  * EdgeIter- An iterator object for the Edges list
+  * EdgeList- An arrayList that contains info about the edges
  
  **The class contains the following methods:**
  * Costructor method which gets a Json file
