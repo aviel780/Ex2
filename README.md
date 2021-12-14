@@ -91,5 +91,8 @@
          Returns the shortest path which contains the list's nodes
   * Save- Saves the graph into a json file , using the Gson library of google
   * Load- Loads from json file, using the Gson library of google
+
+![image](https://user-images.githubusercontent.com/94145486/146048775-b3a1e01b-b53e-4fc0-9f89-dd4958f6a843.png)
+
   
       
